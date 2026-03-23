@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌸 Very Important Reminder 🌸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffe0f0 0%, #ffd6e7 40%, #ffb3d1 100%);
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* Floating petals background */
+    .petal {
+      position: fixed;
+      font-size: 1.5rem;
+      animation: fall linear infinite;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-60px) rotate(0deg);   opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 30px;
+      padding: 40px 36px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(255, 105, 160, 0.25);
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      color: #e0457b;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #c06090;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    /* Big flower emoji that wobbles */
+    .big-flower {
+      font-size: 5rem;
+      display: block;
+      animation: wobble 3s ease-in-out infinite;
+      margin-bottom: 16px;
+      cursor: default;
+      user-select: none;
+    }
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-5deg) scale(1); }
+      50%       { transform: rotate(5deg)  scale(1.08); }
+    }
+
+    /* Day counter */
+    .counter-label {
+      font-size: 0.9rem;
+      color: #b05080;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .counter-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ff6eb4, #ff3d8b);
+      color: white;
+      border-radius: 18px;
+      padding: 10px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 18px rgba(255, 61, 139, 0.35);
+    }
+    .counter-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .counter-unit {
+      font-size: 1rem;
+      font-weight: 700;
+      opacity: 0.9;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    /* Message bubble */
+    .message-box {
+      background: #fff0f7;
+      border: 2px solid #ffb3d9;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 1.05rem;
+      color: #a0306a;
+      font-weight: 600;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Buttons */
+    .btn {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 20px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover  { transform: translateY(-2px); }
+    .btn:active { transform: translateY(1px);  }
+
+    .btn-green {
+      background: linear-gradient(135deg, #56d986, #2ecc71);
+      color: white;
+      box-shadow: 0 4px 16px rgba(46, 204, 113, 0.35);
+    }
+    .btn-pink {
+      background: linear-gradient(135deg, #ff85c0, #ff3d8b);
+      color: white;
+      box-shadow: 0 4px 16px rgba(255, 61, 139, 0.3);
+    }
+    .btn-excuse {
+      background: linear-gradient(135deg, #ffd06e, #ffaa00);
+      color: white;
+      box-shadow: 0 4px 16px rgba(255, 170, 0, 0.3);
+      font-size: 0.9rem;
+    }
+
+    /* Confession panel (hidden by default) */
+    .confession-panel {
+      display: none;
+      background: #fff8e7;
+      border: 2px solid #ffd06e;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: #7a5000;
+      font-weight: 600;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Streak badge */
+    .streak {
+      font-size: 0.82rem;
+      color: #c06090;
+      margin-top: 8px;
+    }
+    .streak span {
+      font-weight: 800;
+      color: #e0457b;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      font-size: 0.78rem;
+      color: #d07090;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating petals injected by JS -->
+
+  <div class="container">
+    <span class="big-flower" id="mainFlower">🌸</span>
+    <h1>Flower Reminder</h1>
+    <p class="subtitle">an important public service for your girlfriend</p>
+
+    <p class="counter-label">Days without flowers</p>
+    <div class="counter-box">
+      <span class="counter-number" id="dayCount">0</span>
+      <span class="counter-unit">days<br>of sadness</span>
+    </div>
+
+    <div class="message-box" id="messageBox">
+      Loading guilt trip... 🌸
+    </div>
+
+    <div class="confession-panel" id="confessionPanel"></div>
+
+    <button class="btn btn-green" onclick="boughtFlowers()">
+      ✅ I Already Bought Them!
+    </button>
+    <button class="btn btn-pink" onclick="anotherDay()">
+      😬 Maybe Tomorrow...
+    </button>
+    <button class="btn btn-excuse" onclick="makeExcuse()">
+      🙈 Generate My Excuse
+    </button>
+
+    <p class="streak">Personal best without buying flowers: <span id="bestStreak">0</span> days of chaos</p>
+  </div>
+
+  <footer>made with 💗 — now go buy the flowers</footer>
+
+<script>
+  // ─── Petals ────────────────────────────────────────────────────────────────
+  const petalEmojis = ['🌸','🌺','🌷','💐','🌼','✿'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay    = '-' + (Math.random() * 12) + 's';
+    p.style.fontSize           = (1 + Math.random() * 1.4) + 'rem';
+    document.body.appendChild(p);
+  }
+
+  // ─── Messages by guilt level ────────────────────────────────────────────────
+  const messages = [
+    // 0 days
+    ["Oh wow, you just bought flowers? That's... that's actually really sweet. 🥺 I love you.",
+     "Zero days?? Are you sure this is the right app? Check again babe 👀"],
+    // 1–3 days
+    ["It's only been a day. You're fine. Probably. Also your girlfriend is very cute. 🌸",
+     "One day without flowers. The plants outside are judging you. Your adorable girlfriend is not. Yet.",
+     "Still early. I believe in you. Mostly. Your girlfriend remains extremely cute regardless. 💕",
+     "Day 2. The roses at the store are looking desperate. As is the very cute girl waiting for them.",
+     "Day 3. Three. Whole. Days. The flowers are waiting. So is the cutest person you know."],
+    // 4–7 days
+    ["Day {n}. You had FOUR chances to be a hero and didn't take one. A cute girl noticed.",
+     "Day {n}. My imaginary flowers are wilting. I, however, remain a delight.",
+     "Day {n}. I'm not mad. I'm just... keeping count. 🌸 (and being very cute about it)",
+     "Day {n}. The flower shop misses you. So does your girlfriend. Who is, by the way, extremely cute.",
+     "Day {n}. This app has now outlived several bouquets you could have bought for a very cute person.",
+     "Day {n}. My horoscope said a cute girl nearby would receive flowers this week. Still waiting. 🌷"],
+    // 8–14 days
+    ["Day {n}. I showed this counter to the flowers at the store. They cried. I remained cute. 🌷",
+     "Day {n}. At this point I'm basically a cactus. I need NOTHING. (I need flowers. And I'm cute.)",
+     "Day {n}. Scientists have confirmed that cute girlfriends without flowers cause sadness. In the boyfriend. 🔬",
+     "Day {n}. I've started naming the flowers at the grocery store. Their names are all mine. Because I'm cute.",
+     "Day {n}. The audacity. The nerve. The GALL. Also your girlfriend is objectively adorable and you know it."],
+    // 15+ days
+    ["Day {n}. I have sent you {n} telepathic reminders from a very cute source. Zero received.",
+     "Day {n}. The flower shop put up a missing poster. It has your photo. Mine is there too, looking cute.",
+     "Day {n}. I'm not saying you've forgotten. But I built an app. AN APP. A cute girl built this.",
+     "Day {n}. At this point the flowers would be a national holiday. I would be the mascot. Cute mascot.",
+     "Day {n}. History books will note: she was cute, she deserved flowers, he had {n} days to figure that out. 📖",
+     "Day {n}. Do you know what rhymes with '{n} days'? BETRAYAL. Also I look really good today.",
+     "Day {n}. New personal record! I'm so proud of you! (I'm not proud of you.) (I am still very cute though.)"]
+  ];
+
+  const excuses = [
+    ["I was going to, but I got distracted by literally nothing.",
+     "The flower shop was closed… at 2pm on a Tuesday.",
+     "I'm saving up for a REALLY big bouquet. Any decade now.",
+     "I forgot. Again. For the {n}th time.",
+     "My hands were full. Of nothing. But still.",
+     "I was going to order them online but the WiFi was slow.",
+     "I thought about it and that counts, right?",
+     "The flowers looked sad in the store, I didn't want to upset them.",
+     "I'm a work in progress. A very slow work. In progress.",
+     "I had a dream I bought flowers. Does that count? No? Okay."]
+  ];
+
+  const confessions = [
+    "Bold claim. Please submit photographic evidence to avoid further guilt points. 📸",
+    "Oh REALLY? And where are they? ...I'm waiting. 🌸",
+    "You bought them?? The app is proud of you. I'm proud of you. You did it!! 🎉",
+    "Hmm. Bold. Brave. Unverified. But I'll allow it. 💕",
+    "According to my records this resets the counter. According to my heart, you're cute. 🥺"
+  ];
+
+  // ─── State ──────────────────────────────────────────────────────────────────
+  let days = parseInt(localStorage.getItem('flowerDays') || '0');
+  let best = parseInt(localStorage.getItem('bestStreak')  || '0');
+
+  function save() {
+    localStorage.setItem('flowerDays',  days);
+    localStorage.setItem('bestStreak', best);
+  }
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function getMessagePool(d) {
+    if (d === 0)       return messages[0];
+    if (d <= 3)        return messages[1];
+    if (d <= 7)        return messages[2];
+    if (d <= 14)       return messages[3];
+    return messages[4];
+  }
+
+  function render() {
+    document.getElementById('dayCount').textContent = days;
+    document.getElementById('bestStreak').textContent = best;
+
+    const pool = getMessagePool(days);
+    const raw  = pick(pool);
+    const msg  = raw.replace(/\{n\}/g, days);
+    const box  = document.getElementById('messageBox');
+    box.style.animation = 'none';
+    box.offsetHeight; // reflow
+    box.style.animation = '';
+    box.textContent = msg;
+
+    // Flower changes based on suffering level
+    const flower = document.getElementById('mainFlower');
+    if      (days === 0)   flower.textContent = '🌺';
+    else if (days <= 3)    flower.textContent = '🌸';
+    else if (days <= 7)    flower.textContent = '🌷';
+    else if (days <= 14)   flower.textContent = '🥀';
+    else                   flower.textContent = '💀';
+
+    document.getElementById('confessionPanel').style.display = 'none';
+    save();
+  }
+
+  function boughtFlowers() {
+    if (days > best) best = days;
+    days = 0;
+    save();
+    const panel = document.getElementById('confessionPanel');
+    panel.textContent = pick(confessions[0]);
+    panel.style.display = 'flex';
+    render();
+    document.getElementById('mainFlower').textContent = '🌺';
+  }
+
+  function anotherDay() {
+    days++;
+    if (days > best) best = days;
+    render();
+  }
+
+  function makeExcuse() {
+    const pool  = excuses[0];
+    const raw   = pick(pool);
+    const txt   = raw.replace(/\{n\}/g, days);
+    const panel = document.getElementById('confessionPanel');
+    panel.textContent = '💬 "' + txt + '" — nice try babe. Counter stays. 🌸';
+    panel.style.display = 'flex';
+    panel.style.background = '#fff0f7';
+    panel.style.borderColor = '#ffb3d9';
+    panel.style.color = '#a0306a';
+  }
+
+  // ─── Init ───────────────────────────────────────────────────────────────────
+  render();
+</script>
+
+</body>
+</html>
